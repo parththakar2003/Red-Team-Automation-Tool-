@@ -19,6 +19,51 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
+# Check for required dependencies before proceeding
+def check_dependencies():
+    """Check if required dependencies are installed"""
+    missing_deps = []
+    required_modules = [
+        ('yaml', 'pyyaml'),
+        ('dns.resolver', 'dnspython'),
+        ('requests', 'requests'),
+        ('bs4', 'beautifulsoup4'),
+        ('jinja2', 'jinja2'),
+        ('nmap', 'python-nmap'),
+        ('colorama', 'colorama'),
+    ]
+    
+    for module, package in required_modules:
+        try:
+            __import__(module)
+        except ImportError:
+            missing_deps.append(package)
+    
+    if missing_deps:
+        print("\n" + "="*70)
+        print("❌ ERROR: Required dependencies are not installed!")
+        print("="*70)
+        print("\nMissing packages:")
+        for dep in missing_deps:
+            print(f"  • {dep}")
+        print("\n" + "-"*70)
+        print("To fix this issue, please install the dependencies:")
+        print("\n1. If using a virtual environment (recommended):")
+        print("   source venv/bin/activate  # On Windows: venv\\Scripts\\activate")
+        print("   pip install -r requirements.txt")
+        print("\n2. Or install in user directory:")
+        print("   pip install --user -r requirements.txt")
+        print("\n3. Or create a new virtual environment:")
+        print("   python3 -m venv venv")
+        print("   source venv/bin/activate  # On Windows: venv\\Scripts\\activate")
+        print("   pip install -r requirements.txt")
+        print("\nFor detailed installation instructions, see INSTALLATION.md")
+        print("="*70 + "\n")
+        sys.exit(1)
+
+# Check dependencies before importing project modules
+check_dependencies()
+
 # Try to import Rich CLI utilities, fallback to basic if not available
 try:
     from utils.cli_rich import (
