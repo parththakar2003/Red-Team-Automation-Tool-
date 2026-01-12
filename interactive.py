@@ -21,6 +21,7 @@ def check_dependencies():
         ('bs4', 'beautifulsoup4'),
         ('jinja2', 'jinja2'),
         ('nmap', 'python-nmap'),
+        ('colorama', 'colorama'),
     ]
     
     for module, package in required_modules:
