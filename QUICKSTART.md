@@ -35,7 +35,7 @@ python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install Python dependencies
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 **Important:** On modern Linux distributions (Kali Linux, Ubuntu 23.04+), you **must** use a virtual environment due to PEP 668 externally-managed environment restrictions.

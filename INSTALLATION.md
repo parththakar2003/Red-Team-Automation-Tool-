@@ -132,8 +132,10 @@ git clone https://github.com/parththakar2003/Red-Team-Automation-Tool-.git
 cd Red-Team-Automation-Tool-
 pipx install .
 
-# Run from anywhere
+# The tool can then be run from anywhere using the 'redteam' command
+# or by running the Python scripts directly
 redteam --version
+# Or: python3 main.py --version
 ```
 
 ### Method 4: System-Wide (Not Recommended)

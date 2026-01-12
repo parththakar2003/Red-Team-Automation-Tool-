@@ -114,7 +114,7 @@ pip install -r requirements.txt
 **Alternative:** If you prefer not to use a virtual environment, you can use:
 ```bash
 pip install --user -r requirements.txt
-# Or (not recommended): pip install --break-system-packages -r requirements.txt
+# Or (WARNING: may break system Python): pip install --break-system-packages -r requirements.txt
 ```
 
 ## 📖 Usage
