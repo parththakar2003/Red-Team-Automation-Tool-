@@ -1,5 +1,10 @@
 # Red Team Automation Framework - Usage Examples
 
+**Note:** If you installed the tool using a virtual environment (recommended), make sure to activate it before running any commands:
+```bash
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
 ## Test Targets (For Educational Use Only)
 
 **⚠️ WARNING: Only scan systems you own or have explicit written authorization to test!**

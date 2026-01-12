@@ -39,31 +39,44 @@ We welcome enhancement suggestions:
 ### Pull Requests
 
 1. **Fork the repository**
-2. **Create a feature branch**
+2. **Clone and setup development environment**
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/Red-Team-Automation-Tool-.git
+   cd Red-Team-Automation-Tool-
+   
+   # Create and activate virtual environment
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   
+   # Install dependencies
+   pip install -r requirements.txt
+   ```
+
+3. **Create a feature branch**
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-3. **Make your changes**
+4. **Make your changes**
    - Follow existing code style
    - Add comments for complex logic
    - Update documentation if needed
 
-4. **Test your changes**
+5. **Test your changes**
    - Ensure code runs without errors
    - Test with different targets if applicable
 
-5. **Commit your changes**
+6. **Commit your changes**
    ```bash
    git commit -m "Add feature: description"
    ```
 
-6. **Push to your fork**
+7. **Push to your fork**
    ```bash
    git push origin feature/your-feature-name
    ```
 
-7. **Create a Pull Request**
+8. **Create a Pull Request**
    - Provide clear description
    - Link to any related issues
    - Explain what you changed and why
