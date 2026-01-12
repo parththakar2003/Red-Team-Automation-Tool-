@@ -30,23 +30,44 @@ brew install nmap
 git clone https://github.com/parththakar2003/Red-Team-Automation-Tool-.git
 cd Red-Team-Automation-Tool-
 
+# Create and activate a virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 # Install Python dependencies
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
+
+**Important:** On modern Linux distributions (Kali Linux, Ubuntu 23.04+), you **must** use a virtual environment due to PEP 668 externally-managed environment restrictions.
+
+**If you see an "externally-managed-environment" error:**
+- You need to use a virtual environment (recommended, see above)
+- Or install with `pip install --user -r requirements.txt`
+- Or use `pipx` for application installation
 
 ### Step 3: Verify Installation
 
 ```bash
+# Make sure virtual environment is activated
+# You should see (venv) in your prompt
 python3 main.py --version
 ```
 
 You should see: `Red Team Automation Framework v1.0.0`
+
+**Note:** Always activate the virtual environment before running the tool:
+```bash
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
 ## 🎯 Quick Usage
 
 ### Option 1: Interactive Mode (Recommended for Beginners)
 
 ```bash
+# Activate virtual environment first
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 python3 interactive.py
 ```
 
@@ -58,6 +79,9 @@ Follow the menu:
 ### Option 2: Command Line (For Power Users)
 
 ```bash
+# Activate virtual environment first
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 # Quick scan
 python3 main.py -t example.com -m recon scan --skip-auth
 
@@ -140,10 +164,33 @@ enumeration:
 
 ## 🔍 Troubleshooting
 
+### "externally-managed-environment" Error
+
+This occurs on modern Linux distributions (Kali Linux, Ubuntu 23.04+) due to PEP 668.
+
+**Solution (Recommended):**
+```bash
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+**Alternative Solutions:**
+```bash
+# Option 1: Install in user directory
+pip install --user -r requirements.txt
+
+# Option 2: Use pipx (for application-style installation)
+pipx install .
+```
+
 ### "Module not found" Error
 
 ```bash
-pip3 install -r requirements.txt
+# Ensure virtual environment is activated
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
 ### "Nmap not found" Error
