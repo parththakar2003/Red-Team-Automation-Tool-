@@ -197,7 +197,8 @@ def check_framework_functionality():
             print_status(f"Framework test: {result.stdout.strip()}", 'success')
             return True
         else:
-            error_msg = result.stderr.strip() if result.stderr.strip() else "Unknown error"
+            stderr_stripped = result.stderr.strip()
+            error_msg = stderr_stripped if stderr_stripped else "Unknown error"
             print_status(f"Framework test failed: {error_msg}", 'error')
             return False
     except FileNotFoundError:
