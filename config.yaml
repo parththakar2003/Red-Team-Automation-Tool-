@@ -1,0 +1,125 @@
+# Red Team Automation Tool Configuration
+# ========================================
+# WARNING: This tool is for authorized security testing only
+# Unauthorized use is illegal and unethical
+
+# Application Settings
+app:
+  name: "Red Team Automation Framework"
+  version: "1.0.0"
+  author: "Security Team"
+  
+# Scan Configuration
+scan:
+  # Timeout settings (seconds)
+  timeout: 30
+  connection_timeout: 10
+  
+  # Rate limiting (requests per second)
+  rate_limit: 10
+  
+  # Threading
+  max_threads: 10
+  
+  # User Agent for HTTP requests
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Red Team Security Assessment Tool"
+
+# Reconnaissance
+recon:
+  dns_servers:
+    - "8.8.8.8"
+    - "8.8.4.4"
+  subdomain_wordlist_size: "medium"  # small, medium, large
+  enable_passive_recon: true
+
+# Port Scanning
+scanning:
+  # Port ranges
+  common_ports: [21, 22, 23, 25, 53, 80, 110, 111, 135, 139, 143, 443, 445, 993, 995, 1723, 3306, 3389, 5900, 8080, 8443]
+  full_scan: false  # If true, scan all 65535 ports
+  
+  # Service detection
+  service_detection: true
+  version_detection: true
+  os_detection: true
+
+# Enumeration
+enumeration:
+  # Directory discovery
+  directory_wordlist_size: "medium"  # small, medium, large
+  max_directories: 1000
+  
+  # Web technology
+  identify_cms: true
+  identify_frameworks: true
+  identify_server_software: true
+  
+  # SSL/TLS
+  check_ssl_certs: true
+  check_ssl_vulnerabilities: true
+
+# Vulnerability Mapping
+vulnerability:
+  # CVE Database
+  enable_cve_lookup: true
+  cve_api_timeout: 10
+  
+  # Configuration checks
+  check_misconfigurations: true
+  check_default_credentials: false  # Disabled by default for safety
+  
+  # Safe mode - no exploitation
+  safe_mode: true
+
+# MITRE ATT&CK
+mitre:
+  enable_mapping: true
+  include_sub_techniques: true
+  version: "v14"
+
+# Risk Analysis
+risk:
+  scoring_method: "cvss"  # cvss, custom
+  business_impact_analysis: true
+  
+  # Risk thresholds
+  critical_threshold: 9.0
+  high_threshold: 7.0
+  medium_threshold: 4.0
+  low_threshold: 0.0
+
+# Reporting
+reporting:
+  # Output formats
+  html: true
+  json: true
+  pdf: false  # Requires additional dependencies
+  
+  # Report content
+  include_executive_summary: true
+  include_technical_details: true
+  include_screenshots: false
+  include_remediation: true
+  include_mitre_mapping: true
+  
+  # Report location
+  output_dir: "reports"
+  
+  # Branding
+  company_name: "Security Assessment Team"
+  logo_path: ""
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_to_file: true
+  log_file: "logs/redteam.log"
+  log_format: "[%(asctime)s] %(levelname)s - %(name)s - %(message)s"
+
+# Ethics & Safety
+ethics:
+  require_authorization: true
+  show_disclaimer: true
+  no_exploitation: true
+  no_credential_harvesting: true
+  no_destructive_actions: true
