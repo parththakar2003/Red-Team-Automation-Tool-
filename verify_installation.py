@@ -197,7 +197,8 @@ def check_framework_functionality():
             print_status(f"Framework test: {result.stdout.strip()}", 'success')
             return True
         else:
-            print_status(f"Framework test failed: {result.stderr}", 'error')
+            error_msg = result.stderr.strip() if result.stderr.strip() else "Unknown error"
+            print_status(f"Framework test failed: {error_msg}", 'error')
             return False
     except FileNotFoundError:
         print_status("main.py not found in current directory", 'error')
@@ -252,8 +253,11 @@ def main():
         result_text = 'PASSED' if passed_check else 'RECOMMENDED'
         print_status(f"{check_name}: {result_text}", status)
     
-    print(f"\n{Colors.BOLD}Critical: {critical_passed}/{critical_total} passed | " 
-          f"Optional: {optional_passed}/{optional_total} passed{Colors.RESET}\n")
+    summary_text = (
+        f"\n{Colors.BOLD}Critical: {critical_passed}/{critical_total} passed | "
+        f"Optional: {optional_passed}/{optional_total} passed{Colors.RESET}\n"
+    )
+    print(summary_text)
     
     # Framework is functional if all critical checks pass
     if critical_passed == critical_total:
