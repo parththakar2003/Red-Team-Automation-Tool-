@@ -65,6 +65,8 @@ Red-Team-Automation-Tool/
 
 ## 🚀 Installation
 
+For detailed installation instructions including troubleshooting and platform-specific guides, see [INSTALLATION.md](INSTALLATION.md).
+
 ### Prerequisites
 
 - Python 3.8 or higher
@@ -99,8 +101,20 @@ Download from https://nmap.org/download.html
 git clone https://github.com/parththakar2003/Red-Team-Automation-Tool-.git
 cd Red-Team-Automation-Tool-
 
+# Create and activate a virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 # Install dependencies
 pip install -r requirements.txt
+```
+
+**Note:** On modern Linux distributions (like Kali Linux, Ubuntu 23.04+), Python environments are externally managed (PEP 668). Using a virtual environment is **strongly recommended** to avoid installation errors.
+
+**Alternative:** If you prefer not to use a virtual environment, you can use:
+```bash
+pip install --user -r requirements.txt
+# Or (WARNING: may break system Python): pip install --break-system-packages -r requirements.txt
 ```
 
 ## 📖 Usage
@@ -110,6 +124,9 @@ pip install -r requirements.txt
 For the most user-friendly experience, use the interactive menu:
 
 ```bash
+# If using virtual environment, make sure it's activated first
+# source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 python interactive.py
 ```
 
