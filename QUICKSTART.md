@@ -48,12 +48,20 @@ pip3 install -r requirements.txt
 ### Step 3: Verify Installation
 
 ```bash
-# Make sure virtual environment is activated
-# You should see (venv) in your prompt
+# Run comprehensive verification (recommended)
+python3 verify_installation.py
+
+# Or quick version check
 python3 main.py --version
 ```
 
 You should see: `Red Team Automation Framework v1.0.0`
+
+The verification script checks:
+- ✓ Python version and packages
+- ✓ Project files and functionality  
+- ⚠ Virtual environment (recommended)
+- ⚠ External tools (nmap)
 
 **Note:** Always activate the virtual environment before running the tool:
 ```bash
