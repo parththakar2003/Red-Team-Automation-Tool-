@@ -156,7 +156,7 @@ class SubdomainDiscovery:
             'There is no app configured at that hostname',
             'NoSuchBucket',
             'No Such Account',
-            'You're Almost Done',
+            "You're Almost Done",
             'Trying to access your account?',
             'Project doesnt exist',
         ]

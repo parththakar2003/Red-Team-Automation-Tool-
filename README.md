@@ -105,37 +105,66 @@ pip install -r requirements.txt
 
 ## 📖 Usage
 
-### Basic Scan
+### Interactive Mode (Easiest!)
+
+For the most user-friendly experience, use the interactive menu:
+
+```bash
+python interactive.py
+```
+
+This provides a guided menu with:
+- 🎯 Quick scan options
+- 📋 Standard and full assessments  
+- 🎨 Custom module selection
+- 📚 Built-in help
+- ✨ Beautiful CLI interface
+
+### Command Line Mode
+
+#### Basic Scan
 
 ```bash
 python main.py -t example.com
 ```
 
-### Scan Specific IP
+#### Scan Specific IP
 
 ```bash
 python main.py -t 192.168.1.100
 ```
 
-### Run Specific Modules
+#### Run Specific Modules
 
 ```bash
 python main.py -t example.com -m recon scan enum
 ```
 
-### Full Assessment
+#### Full Assessment
 
 ```bash
 python main.py -t example.com --full
 ```
 
-### Skip Authorization Prompt (Use Carefully!)
+#### Skip Authorization Prompt (Use Carefully!)
 
 ```bash
 python main.py -t example.com --skip-auth
 ```
 
-### Generate JSON Report Only
+#### Quiet Mode (Minimal Output)
+
+```bash
+python main.py -t example.com --quiet
+```
+
+#### Show Findings Table
+
+```bash
+python main.py -t example.com --show-findings
+```
+
+#### Generate JSON Report Only
 
 ```bash
 python main.py -t example.com --json-only
@@ -150,8 +179,11 @@ python main.py -t example.com --json-only
 --skip-auth        Skip authorization confirmation
 --no-report        Skip report generation
 --json-only        Generate JSON report only
+--show-findings    Display findings table in console
+-o, --output       Output directory for reports
 -c, --config       Path to custom config file
 -v, --verbose      Enable verbose output
+-q, --quiet        Quiet mode - minimal output
 --version          Show version information
 ```
 

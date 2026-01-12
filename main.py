@@ -19,7 +19,29 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from utils.banner import print_banner, print_disclaimer, confirm_authorization, print_colored
+# Try to import Rich CLI utilities, fallback to basic if not available
+try:
+    from utils.cli_rich import (
+        print_banner_rich as print_banner,
+        print_disclaimer_rich as print_disclaimer,
+        confirm_authorization_rich as confirm_authorization,
+        print_assessment_header,
+        print_phase_header,
+        print_finding_summary,
+        print_reports_generated,
+        print_success,
+        print_error,
+        print_warning,
+        print_info,
+        print_module_status,
+        print_findings_table,
+        console
+    )
+    RICH_AVAILABLE = True
+except ImportError:
+    from utils.banner import print_banner, print_disclaimer, confirm_authorization, print_colored
+    RICH_AVAILABLE = False
+
 from core.orchestrator import RedTeamOrchestrator
 from reporting.html_generator import HTMLReportGenerator
 from core.config import get_config
@@ -47,6 +69,9 @@ Examples:
   
   # Skip authorization prompt (use only if authorized!)
   python main.py -t example.com --skip-auth
+  
+  # Quiet mode with minimal output
+  python main.py -t example.com --quiet
 
 Important: This tool is for authorized security testing only!
         """
@@ -90,6 +115,11 @@ Important: This tool is for authorized security testing only!
     )
     
     parser.add_argument(
+        '-o', '--output',
+        help='Output directory for reports (default: reports/)'
+    )
+    
+    parser.add_argument(
         '-c', '--config',
         help='Path to custom configuration file'
     )
@@ -98,6 +128,18 @@ Important: This tool is for authorized security testing only!
         '-v', '--verbose',
         action='store_true',
         help='Enable verbose output'
+    )
+    
+    parser.add_argument(
+        '-q', '--quiet',
+        action='store_true',
+        help='Quiet mode - minimal output'
+    )
+    
+    parser.add_argument(
+        '--show-findings',
+        action='store_true',
+        help='Display findings table in console'
     )
     
     parser.add_argument(
@@ -114,18 +156,20 @@ def main():
     # Parse arguments
     args = parse_arguments()
     
-    # Print banner
-    print_banner()
-    
-    # Print disclaimer
-    print_disclaimer()
+    # Print banner (unless quiet mode)
+    if not args.quiet:
+        print_banner()
+        print_disclaimer()
     
     # Confirm authorization
     if not args.skip_auth:
         if not confirm_authorization():
             sys.exit(1)
     else:
-        print_colored("⚠️  Authorization check skipped - ensure you have proper authorization!", "yellow")
+        if RICH_AVAILABLE:
+            print_warning("Authorization check skipped - ensure you have proper authorization!")
+        else:
+            print_colored("⚠️  Authorization check skipped - ensure you have proper authorization!", "yellow")
     
     try:
         # Initialize configuration
@@ -142,45 +186,78 @@ def main():
         if args.full:
             modules = ['recon', 'scan', 'enum', 'vuln', 'risk']
         
+        # Print assessment header
+        if not args.quiet and RICH_AVAILABLE:
+            print_assessment_header(args.target, "Starting...")
+        
         # Initialize orchestrator
         orchestrator = RedTeamOrchestrator()
         
-        # Run assessment
-        print_colored("\n🚀 Starting Red Team Assessment...\n", "green")
+        # Run assessment with enhanced CLI feedback
+        if not args.quiet and RICH_AVAILABLE:
+            print_info("Starting Red Team Assessment...")
+        
         session = orchestrator.run_assessment(args.target, modules=modules)
         
         # Generate reports
         if not args.no_report:
-            print_colored("\n📄 Generating Reports...\n", "cyan")
+            if not args.quiet:
+                if RICH_AVAILABLE:
+                    print_info("Generating Reports...")
+                else:
+                    print_colored("\n📄 Generating Reports...\n", "cyan")
             
             report_generator = HTMLReportGenerator()
             
             # Generate JSON report
             json_path = report_generator.generate_json(session)
-            print_colored(f"✓ JSON Report: {json_path}", "green")
             
             # Generate HTML report unless json-only
+            html_path = None
             if not args.json_only:
                 html_path = report_generator.generate(session)
-                print_colored(f"✓ HTML Report: {html_path}", "green")
+            
+            if not args.quiet:
+                if RICH_AVAILABLE:
+                    print_reports_generated(html_path, json_path)
+                else:
+                    print_colored(f"✓ JSON Report: {json_path}", "green")
+                    if html_path:
+                        print_colored(f"✓ HTML Report: {html_path}", "green")
         
         # Print summary
-        print_colored("\n" + "="*75, "cyan")
-        print_colored("  Assessment Complete", "green")
-        print_colored("="*75, "cyan")
-        
         summary = session.get_risk_summary()
-        print_colored(f"\nTarget: {session.target.identifier}", "white")
-        print_colored(f"Session ID: {session.session_id}", "white")
-        print_colored(f"Duration: {session.duration:.2f} seconds", "white")
-        print_colored(f"\nFindings Summary:", "yellow")
-        print_colored(f"  • Critical: {summary['critical']}", "red")
-        print_colored(f"  • High:     {summary['high']}", "yellow")
-        print_colored(f"  • Medium:   {summary['medium']}", "blue")
-        print_colored(f"  • Low:      {summary['low']}", "green")
-        print_colored(f"  • Total:    {summary['critical'] + summary['high'] + summary['medium'] + summary['low']}", "white")
         
-        print_colored("\n✓ Assessment completed successfully!\n", "green")
+        if not args.quiet:
+            if RICH_AVAILABLE:
+                print_finding_summary(summary, session.duration)
+                
+                # Show findings table if requested
+                if args.show_findings and session.findings:
+                    console.print("\n")
+                    console.rule("[bold cyan]Top Findings[/bold cyan]", style="cyan")
+                    print_findings_table(session.findings)
+                
+            else:
+                print_colored("\n" + "="*75, "cyan")
+                print_colored("  Assessment Complete", "green")
+                print_colored("="*75, "cyan")
+                
+                print_colored(f"\nTarget: {session.target.identifier}", "white")
+                print_colored(f"Session ID: {session.session_id}", "white")
+                print_colored(f"Duration: {session.duration:.2f} seconds", "white")
+                print_colored(f"\nFindings Summary:", "yellow")
+                print_colored(f"  • Critical: {summary['critical']}", "red")
+                print_colored(f"  • High:     {summary['high']}", "yellow")
+                print_colored(f"  • Medium:   {summary['medium']}", "blue")
+                print_colored(f"  • Low:      {summary['low']}", "green")
+                print_colored(f"  • Total:    {summary['critical'] + summary['high'] + summary['medium'] + summary['low']}", "white")
+        
+        if not args.quiet:
+            if RICH_AVAILABLE:
+                print_success("Assessment completed successfully!")
+            else:
+                print_colored("\n✓ Assessment completed successfully!\n", "green")
         
         # Exit with appropriate code based on findings
         if summary['critical'] > 0:
@@ -191,10 +268,16 @@ def main():
             sys.exit(0)  # Success
             
     except KeyboardInterrupt:
-        print_colored("\n\n⚠️  Assessment interrupted by user", "yellow")
+        if RICH_AVAILABLE:
+            print_warning("\n\nAssessment interrupted by user")
+        else:
+            print_colored("\n\n⚠️  Assessment interrupted by user", "yellow")
         sys.exit(130)
     except Exception as e:
-        print_colored(f"\n❌ Error: {str(e)}", "red")
+        if RICH_AVAILABLE:
+            print_error(f"Error: {str(e)}")
+        else:
+            print_colored(f"\n❌ Error: {str(e)}", "red")
         logger = Logger.get()
         logger.error(f"Fatal error: {e}", exc_info=True)
         sys.exit(1)
