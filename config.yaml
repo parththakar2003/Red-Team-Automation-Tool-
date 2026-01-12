@@ -57,6 +57,7 @@ enumeration:
   # SSL/TLS
   check_ssl_certs: true
   check_ssl_vulnerabilities: true
+  verify_ssl: false  # Disable SSL verification for testing (security assessment mode)
 
 # Vulnerability Mapping
 vulnerability:

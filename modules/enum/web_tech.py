@@ -98,8 +98,11 @@ class WebTechIdentifier:
         try:
             # Make HTTP request
             headers = {'User-Agent': self.user_agent}
+            # Note: SSL verification disabled for security testing purposes
+            # In production, this should be configurable
+            verify_ssl = self.config.get('enumeration.verify_ssl', False)
             response = requests.get(url, headers=headers, timeout=self.timeout,
-                                   verify=False, allow_redirects=True)
+                                   verify=verify_ssl, allow_redirects=True)
             
             # Store response headers
             result.headers = dict(response.headers)

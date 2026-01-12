@@ -2,6 +2,7 @@
 CVE Mapper Module
 Maps discovered services to known CVEs
 """
+import re
 import requests
 from typing import List
 from core.logger import Logger
@@ -124,7 +125,6 @@ class CVEMapper:
     
     def _clean_version(self, version: str) -> str:
         """Extract clean version number"""
-        import re
         # Extract version pattern like X.Y.Z
         match = re.search(r'(\d+\.\d+\.?\d*)', version)
         if match:

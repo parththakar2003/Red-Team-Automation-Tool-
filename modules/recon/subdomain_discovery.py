@@ -161,16 +161,19 @@ class SubdomainDiscovery:
             'Project doesnt exist',
         ]
         
-        try:
-            response = requests.get(f"http://{subdomain}", timeout=self.timeout, 
-                                   allow_redirects=True)
-            content = response.text
-            
-            for signature in vulnerable_signatures:
-                if signature in content:
-                    self.logger.warning(f"Potential subdomain takeover: {subdomain}")
-                    return True
-        except Exception as e:
-            self.logger.debug(f"Subdomain takeover check failed for {subdomain}: {e}")
+        # Try both HTTP and HTTPS
+        for protocol in ['https', 'http']:
+            try:
+                response = requests.get(f"{protocol}://{subdomain}", timeout=self.timeout, 
+                                       allow_redirects=True)
+                content = response.text
+                
+                for signature in vulnerable_signatures:
+                    if signature in content:
+                        self.logger.warning(f"Potential subdomain takeover: {subdomain}")
+                        return True
+            except Exception as e:
+                self.logger.debug(f"Subdomain takeover check failed for {protocol}://{subdomain}: {e}")
+                continue
         
         return False

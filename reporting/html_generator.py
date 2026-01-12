@@ -627,8 +627,8 @@ class HTMLReportGenerator:
         mitre_techniques = mitre_mapper.get_all_techniques_for_session(session.findings)
         tactics_summary = mitre_mapper.get_tactics_summary(mitre_techniques)
         
-        # Render template
-        template = Template(self.HTML_TEMPLATE)
+        # Render template (auto-escape is enabled by default in Jinja2 for security)
+        template = Template(self.HTML_TEMPLATE, autoescape=True)
         html_content = template.render(
             session=session,
             summary=summary,

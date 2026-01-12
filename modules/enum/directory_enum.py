@@ -136,8 +136,9 @@ class DirectoryEnumerator:
         
         try:
             headers = {'User-Agent': self.user_agent}
+            verify_ssl = self.config.get('enumeration.verify_ssl', False)
             response = requests.get(url, headers=headers, timeout=self.timeout,
-                                   allow_redirects=False, verify=False)
+                                   allow_redirects=False, verify=verify_ssl)
             
             # Consider successful if status is 200, 301, 302, 401, or 403
             # 401/403 means path exists but requires auth or is forbidden
