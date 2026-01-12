@@ -107,6 +107,9 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Verify installation
+python verify_installation.py
 ```
 
 **Note:** On modern Linux distributions (like Kali Linux, Ubuntu 23.04+), Python environments are externally managed (PEP 668). Using a virtual environment is **strongly recommended** to avoid installation errors.

@@ -93,7 +93,10 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Verify installation
+# Verify installation (recommended)
+python verify_installation.py
+
+# Quick version check
 python main.py --version
 ```
 
@@ -351,6 +354,8 @@ pip install -r requirements.txt --use-feature=fast-deps
 
 After installation, verify everything works:
 
+### Quick Verification
+
 ```bash
 # Activate virtual environment (if using one)
 source venv/bin/activate  # On Windows: venv\Scripts\activate
@@ -360,7 +365,31 @@ python main.py --version
 
 # Expected output:
 # Red Team Automation Framework v1.0.0
+```
 
+### Comprehensive Verification (Recommended)
+
+Use the built-in verification script to check all components:
+
+```bash
+# Activate virtual environment (if using one)
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Run verification script
+python verify_installation.py
+```
+
+The verification script checks:
+- ✓ Python version compatibility
+- ✓ All required Python packages
+- ✓ Project file integrity
+- ✓ Framework functionality
+- ⚠ Virtual environment usage (recommended)
+- ⚠ External tools (nmap)
+
+### Manual Verification
+
+```bash
 # Verify nmap is accessible
 nmap --version
 
